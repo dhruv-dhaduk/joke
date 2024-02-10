@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en-IN">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Joke</title>
+
+        <style>
+            html {
+                background-color: black;
+                color: white;
+                font-family: sans-serif;
+            }
+
+            button {
+                background-color: white;
+                color: black;
+                font-size: 1rem;
+                padding: 0.5rem;
+                border: none;
+                border-radius: 0.5rem;
+
+                cursor: pointer;
+            }
+
+            button:active {
+                background-color: black;
+                color: white;
+                border: 1px solid white;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>This is a Random Joke</h1>
+
+        <div id="joke"></div>
+
+        <button id="another">Another one</button>
+
+        <script>
+            function fetchAndDisplayJoke() {
+                document.querySelector("#joke").innerHTML = "Loading . . .";
+
+                fetch("random")
+                    .then((response) => response.json())
+                    .then((json) => {
+                        if (json.joke) setJoke(json.joke);
+                        else setJoke("Error in fetching the joke");
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        setJoke("Error in fetching the joke");
+                    });
+            }
+
+            function setJoke(jokeText) {
+                const jokeContainer = document.querySelector("#joke");
+
+                jokeContainer.innerHTML = "";
+
+                jokeText.split("\n").forEach((line) => {
+                    jokeContainer.innerHTML += `<p>${line}</p>`;
+                });
+            }
+
+            document
+                .querySelector("#another")
+                .addEventListener("click", fetchAndDisplayJoke);
+            fetchAndDisplayJoke();
+        </script>
+    </body>
+</html>
